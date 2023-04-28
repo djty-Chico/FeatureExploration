@@ -8,20 +8,19 @@ public class PlayerController : MonoBehaviour
     //Basic Movement Variables
     [SerializeField]
     private float walkSpeed = 10f;
-
     private Vector2 moveInput;
     private Rigidbody myRigidbody;
-    //Variables
+    
+    //Player Control/input variables that are directly from overwatch.
+    private float rateOfFire = 0.9f;
+    private int maxAmmo = 13;
+    private float moveSpeed = 5.5f;
+    private float reloadSpeed = 1.5f;
+    private float crouchSpeed = 3.3f;
+    private float maxJumpHeight = 9.1f;
+    private float chargeTime = 0.7f;
 
-    public float maxShootSpeed;
-    public float maxAmmo;
-    public float moveSpeed;
-    public float reloadSpeed;
-    public float crouchSpeed;
-    public float maxJumpHeight;
-    public float chargeTime;
-
-    public float jumpForce;
+    public float jumpCharge;
     // Start is called before the first frame update
     void Start()
     {
