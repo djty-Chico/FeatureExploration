@@ -9,7 +9,7 @@ public class PlayerLook : MonoBehaviour
     [SerializeField]
     private Transform playerBody;
 
-    public float mouseSensitivity = 100f;
+    public float mouseSensitivity = 500f;
 
     float xRotation = 0f;
 
@@ -18,7 +18,7 @@ public class PlayerLook : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;

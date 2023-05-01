@@ -24,6 +24,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "8842af61-b696-45af-8902-d9de366a67dc",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Heal Fire",
                     "type": "Button",
                     "id": "1d56011a-0947-4d72-8273-f732f746ada6",
@@ -128,6 +137,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "AOE Heal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "91e602cc-0a89-4243-bc4e-b0c384682d83",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
