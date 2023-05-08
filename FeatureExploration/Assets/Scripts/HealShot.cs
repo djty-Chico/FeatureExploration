@@ -4,15 +4,20 @@ using UnityEngine;
 
 public class HealShot : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private float healValue = 50f;
+    private float velocityForward = 1000f;
+    private Rigidbody rb;
+    [SerializeField]
+    private GameObject healRadius;
+    private void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        rb.AddForce(transform.forward * velocityForward, ForceMode.Force);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnCollisionEnter(Collision collision)
     {
-        
+        Instantiate(healRadius);
+        Destroy(this.gameObject);
     }
 }
