@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     //Player Control/input variables that are directly from overwatch.
     private float walkSpeed = 5.5f;
-    private float rateOfFire = 0.9f;
+    private float rateOfFire;
     private int maxAmmo = 13;
     private float moveSpeed = 5.5f;
     private float reloadSpeed = 1.5f;
@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private bool crouchOn = false;
     public bool onGround = true;
     private bool jumpPressed = false;
+    private bool readyToFire = true;
 
 
     //Enum for the different movement states that the player can be in,
@@ -46,9 +47,10 @@ public class PlayerController : MonoBehaviour
     {
         myRigidbody = GetComponent<Rigidbody>();
         playercontroller = GetComponent<PlayerController>();
-        jumpHeight = 500f;
         maxJumpHeight = 600f;
-        minJumpHeight = 450f;
+        minJumpHeight = 200f;
+        jumpHeight = minJumpHeight;
+        rateOfFire = 0.9f;
     }
 
     // Update is called once per frame
@@ -61,13 +63,7 @@ public class PlayerController : MonoBehaviour
 
     public void Update()
     {
-        if (jumpPressed == true)
-        {
-            if (onGround == true)
-            {
-                //vertical
-            }
-        }
+        
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -80,15 +76,21 @@ public class PlayerController : MonoBehaviour
     {
         while (jumpHeight < maxJumpHeight)
         {
-            jumpHeight+= 14.28f;
+            jumpHeight+= 57.14f;
             yield return new WaitForSeconds(0.1f);
         }
     }
 
     public IEnumerator jumpChargeCancel()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1f);
         jumpHeight = minJumpHeight;
+    }
+
+    public IEnumerator waitForFire()
+    {
+        yield return new WaitForSeconds(rateOfFire);
+        readyToFire = true; 
     }
     public void Crouch(InputAction.CallbackContext context)
     {
@@ -134,9 +136,15 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log(context);
-            Instantiate(healShot, healSpawnPoint.transform.position, healSpawnPoint.transform.rotation);
-            //transform.forward
+            if (readyToFire == true)
+            {
+                Instantiate(healShot, healSpawnPoint.transform.position, healSpawnPoint.transform.rotation);
+                waitForFire();
+            }
+            else
+            {
+                waitForFire();
+            }
         }
     }
     public void AOE_Heal(InputAction.CallbackContext context)

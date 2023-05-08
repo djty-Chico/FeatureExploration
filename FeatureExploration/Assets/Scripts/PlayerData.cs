@@ -12,6 +12,11 @@ public class PlayerData : MonoBehaviour
     public float currentHealth;
     public float aoeValue;
 
+    [SerializeField]
+    private Text healthText;
+    [SerializeField]
+    private Text ammoText;
+
     private void Update()
     {
         jumpSlider.value = GetComponent<PlayerController>().jumpHeight;
