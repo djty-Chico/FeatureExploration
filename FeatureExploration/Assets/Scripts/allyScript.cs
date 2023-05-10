@@ -4,15 +4,25 @@ using UnityEngine;
 
 public class allyScript : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public float myHealth;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        myHealth = 0;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "HealShot")
+        {
+            myHealth += 20;
+        }
+        if (other.tag == "HealShotExplosion")
+        {
+            myHealth += 50;
+        }
+        if (other.tag == "AOEHeal")
+        {
+            myHealth += 100;
+        }
     }
 }

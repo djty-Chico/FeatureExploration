@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1988331458806160487}
   m_Layer: 0
   m_Name: AOE Heal
-  m_TagString: Untagged
+  m_TagString: AOEHeal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -108,6 +108,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 904c533410a043e4a879c7f4169a7ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  aoeHealValue: 100
-  rb: {fileID: 0}
   aoe: {fileID: 0}

@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private float maxJumpHeight = 600f;
     private float chargeTime = 0.7f;
     private float minJumpHeight;
+    private float aoeHealCD;
     [SerializeField]
     public float jumpHeight;
 
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public bool onGround = true;
     private bool jumpPressed = false;
     private bool readyToFire = true;
+    private bool aoeReady = true;
 
 
     //Enum for the different movement states that the player can be in,
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
         minJumpHeight = 200f;
         jumpHeight = minJumpHeight;
         rateOfFire = 0.9f;
+        aoeHealCD = 3f;
     }
 
     // Update is called once per frame
@@ -76,8 +79,16 @@ public class PlayerController : MonoBehaviour
     {
         while (jumpHeight < maxJumpHeight)
         {
-            jumpHeight+= 57.14f;
-            yield return new WaitForSeconds(0.1f);
+            if (crouchOn == true)
+            {
+                jumpHeight += 57.14f;
+                yield return new WaitForSeconds(0.1f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(0.1f);
+                jumpHeight += 0f;
+            }
         }
     }
 
@@ -92,29 +103,37 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(rateOfFire);
         readyToFire = true; 
     }
+    public IEnumerator waitForAOE()
+    {
+        yield return new WaitForSeconds(aoeHealCD);
+        aoeReady = true;
+    }
     public void Crouch(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
+            crouchOn = true;
             StartCoroutine(chargingJump());
             Debug.Log("Crouch Perfromed");
-            crouchOn = true;
             transform.localScale = new Vector3(1, 0.75f, 1);
             //exact crouch speed from Overwatch
             walkSpeed = 3.3f;
             state = MovementState.crouching;
         }
-        else
-        {
-            //go back to normal move speed/scale while not crouched
-            crouchOn = false;
-            transform.localScale = new Vector3(1, 1, 1);
-            walkSpeed = 5.5f;
+        //else
+        //{
+        //go back to normal move speed/scale while not crouched
+        //crouchOn = false;
+        //transform.localScale = new Vector3(1, 1, 1);
+        //walkSpeed = 5.5f;
 
-        }
+        //}
         if (context.canceled)
         {
+            crouchOn = false;
             StartCoroutine(jumpChargeCancel());
+            transform.localScale = new Vector3(1, 1, 1);
+            walkSpeed = 5.5f;
         }
     }
 
@@ -129,6 +148,7 @@ public class PlayerController : MonoBehaviour
             onGround = false;
             myRigidbody.AddForce(Vector3.up * jumpHeight, ForceMode.Force);
             state = MovementState.jump;
+            jumpHeight = minJumpHeight;
         }
     }
 
@@ -139,11 +159,8 @@ public class PlayerController : MonoBehaviour
             if (readyToFire == true)
             {
                 Instantiate(healShot, healSpawnPoint.transform.position, healSpawnPoint.transform.rotation);
-                waitForFire();
-            }
-            else
-            {
-                waitForFire();
+                readyToFire = false;
+                StartCoroutine(waitForFire());
             }
         }
     }
@@ -151,8 +168,12 @@ public class PlayerController : MonoBehaviour
     {
         if (context.performed)
         {
-            Debug.Log(context);
-            Instantiate(healAOE, transform.position, transform.rotation);
+            if (aoeReady == true)
+            {
+                Instantiate(healAOE, transform.position, transform.rotation);
+                aoeReady = false;
+                StartCoroutine(waitForAOE());
+            }
         }
     }
 

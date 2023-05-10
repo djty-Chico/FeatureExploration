@@ -17,7 +17,7 @@ public class HealShot : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Instantiate(healRadius);
         Destroy(this.gameObject);
+        Instantiate(healRadius, transform.position, transform.rotation);
     }
 }

@@ -12,6 +12,7 @@ public class ShiftAOE : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        StartCoroutine(destroyAoeHeal());
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -20,10 +21,14 @@ public class ShiftAOE : MonoBehaviour
             collision.gameObject.GetComponent<PlayerData>().currentHealth += aoeHealValue;
             destroyAoeHeal();
         }
+        if (collision.gameObject.tag == "Ally")
+        {
+            collision.gameObject.GetComponent<allyScript>().myHealth += aoeHealValue;
+        }
     }
     public IEnumerator destroyAoeHeal()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         Destroy(this.gameObject);
     }
 }
